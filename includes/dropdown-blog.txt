@@ -1,3 +1,20 @@
+        <!--
+        <li class="nav-item dropdown">
+          <a class="nav-link active dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+          <i class="bi bi-archive-fill"></i> Repository
+          </a>
+          <ul class="dropdown-menu bg-light rounded-0" aria-labelledby="navbarDropdown">
+            <li><a class="dropdown-item" href="#">Projects</a></li>
+            <li><a class="dropdown-item" href="#">Design</a></li>
+            <li><a class="dropdown-item" href="#">Writing</a></li>
+            <dropdown-blog.txt here
+            <li><a class="dropdown-item" href="#">Courses</a></li>
+            <li><a class="dropdown-item" href="<?= base_url('gallery.php') ?>">Photography</a></li>
+          </ul>
+        </li>
+        -->         
+         
+         
             <?php
               $navbarCategory = "SELECT * FROM categories WHERE navbar_status='0' AND status='0' "; 
               $navbarCategory_run = mysqli_query($con, $navbarCategory);
