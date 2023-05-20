@@ -74,12 +74,12 @@ include('includes/navbar.php');
                     <p class="pt-3">Outside of work and school, I enjoy: </p>
                         <ul class="px-5">
                             <li>
-                                Eating pizza
+                                Modifying, repairing, and driving cars
                             </li>
                             <li>
-                                
+                                <a class="link" href="https://open.spotify.com/playlist/0Z30iV34a061avNbEC8TOe?si=2ca625b754cb4614" target="blank">Listening to podcasts about finance, economics, technology, history, and psychology </a>
                             <li>
-                                
+                                <a class="link" href="https://www.youtube.com/watch?v=LvW5yxIdBuM" target="blank">Playing the piano</a>    
                             </li>
                         </ul>
                     
