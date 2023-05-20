@@ -46,13 +46,13 @@ include('includes/navbar.php');
                       annual scavenger hunt. 
                     </li>
                     <li>
-                    Conducted weekly advising meetings with 4 undergraduate students to provide academic support and career planning. Assisted students in the purchasing of books 
-                    and essential school supplies.
+                      Conducted weekly advising meetings with 4 undergraduate students to provide academic support and career planning. Assisted students in the purchasing of books 
+                      and essential school supplies.
                     </li>
                     <li>
-                    Managed Trails Ministries' status as a PHEAA State Work Study Program employer by submitting the necessary documents
-                    for compliance. Processed student worker applications, oversaw roster for reimbursements, updated titles and job descriptions
-                    for work study employees.
+                      Managed Trails Ministries' status as a PHEAA State Work Study Program employer by submitting the necessary documents
+                      for compliance. Processed student worker applications, oversaw roster for reimbursements, updated titles and job descriptions
+                      for work study employees.
                     </li>
                   </ul>
                   <br>  
@@ -62,12 +62,12 @@ include('includes/navbar.php');
                   <br>
                   <ul>
                     <li>
-                    Coached and refereed campers in competitve sports; primarily football, basketball, and soccer. Encouraged sportsmanship, spirited competition, and
-                    mental/physical resilience.
+                      Coached and refereed campers in competitve sports; primarily football, basketball, and soccer. Encouraged sportsmanship, spirited competition, and
+                      mental/physical resilience.
                     </li>
                     <li>
-                    Participated in community and culture building by greeting families on move-in day,
-                    performing in an evening showcase, and participating in end-of-day reflections with campers.
+                      Participated in community and culture building by greeting families on move-in day,
+                      performing in an evening showcase, and participating in end-of-day reflections with campers.
                     </li>
                     <li>
                       Maintained the athletic facilities throughout the camp property. Set up for activities, camp events, and athletic competitions.
@@ -84,7 +84,7 @@ include('includes/navbar.php');
                   <ul>
                     <li>
                       Developed and implemented outreach programs to reduce underage 
-                      drinking and high-risk alcohol use. Collaborated with several presenters to organize of Alcohol-Free Friday Night Events that 
+                      drinking and high-risk alcohol use. Collaborated with several presenters to organize Alcohol-Free Friday Night Events that 
                       provided students with alcohol education and engaging alternatives to alcohol related weekend activities.
                     </li>
                     <li>
@@ -110,7 +110,7 @@ include('includes/navbar.php');
                        Practices program.
                     </li>
                     <li>
-                      Worked with student leaders to plan and launch the Non-Traditional Students Association.
+                        Worked with student leaders to plan and launch the Non-Traditional Students Association.
                     </li>
                   </ul>
                   <br>
