@@ -74,7 +74,7 @@ include('includes/navbar.php');
                     <p class="pt-3">Outside of work and school, I enjoy: </p>
                         <ul class="px-5">
                             <li>
-                                FOod
+                                Eating pizza
                             </li>
                             <li>
                                 
