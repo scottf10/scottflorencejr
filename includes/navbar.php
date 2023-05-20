@@ -12,21 +12,7 @@
         <li class="nav-item">
           <a class="nav-link active" href="<?= base_url('about.php') ?>"><i class="bi bi-person-fill"></i> Career Highlights</a>
         </li>
-        <!--
-        <li class="nav-item dropdown">
-          <a class="nav-link active dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-          <i class="bi bi-archive-fill"></i> Repository
-          </a>
-          <ul class="dropdown-menu bg-light rounded-0" aria-labelledby="navbarDropdown">
-            <li><a class="dropdown-item" href="#">Projects</a></li>
-            <li><a class="dropdown-item" href="#">Design</a></li>
-            <li><a class="dropdown-item" href="#">Writing</a></li>
-            <dropdown-blog.txt here
-            <li><a class="dropdown-item" href="#">Courses</a></li>
-            <li><a class="dropdown-item" href="<?= base_url('gallery.php') ?>">Photography</a></li>
-          </ul>
-        </li>
-        -->
+
         <!-- <?php if(isset($_SESSION['auth_user'])) : ?>
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
