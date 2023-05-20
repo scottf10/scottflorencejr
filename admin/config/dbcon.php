@@ -1,7 +1,7 @@
 <?php
 
 $host = "scottflorencejr.com";
-$username = "root";
+$username = "u748224765_root";
 $password = "z00P!123";
 $database = "u748224765_scottflo";
 
