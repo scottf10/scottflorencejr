@@ -1,0 +1,196 @@
+body{
+    background-color: #ffffff;
+    font-family: 'Alegreya Sans', sans-serif;
+    color: #666666;
+}
+
+
+.bg-light-gray {
+    background-color:rgba(208, 208, 208, 0.3);
+}
+.bg-light-green {
+    background-color:rgba(202, 255, 166, 0.534);
+}
+#footer.py-5 {
+    background-color: none;
+}
+/*Link*/
+a.link {
+    text-decoration: none;
+    color: green;
+}
+a.link:hover {
+    color: gray;
+    transition: color .5s;
+    -webkit-transition: color .5s;
+    -o-transition: color .5s;
+
+}
+/*Cell Phone Number Hover*/
+#cell {
+    color: black; 
+    text-decoration: inherit;
+}
+a#cell:hover {
+    color: gray;
+
+}
+
+/*Navigation*/
+.navbar{
+    padding: 2px;
+}
+
+.nav-link{
+    font-size: 10pt;
+    padding: 8px 20px !important;
+}
+
+.navbar-dark .navbar-nav .nav-link:hover, .navbar-dark .navbar-nav .nav-link:focus {
+    color: rgba(202, 255, 166, 0.75);
+}
+
+/* Social Icon Attributes */
+.social-icon {
+    display: inline-block;
+    width: 50px;
+    height: 50px;
+    border-radius: 25px;
+    transition: background-color 0.2s;
+  }
+  .social-icon:hover {
+    background-color: #666;
+  }
+
+  
+#twittericon {
+    background-image: url("../../assets/images/twittericon.png"); 
+    background-size: cover;
+}
+#twittericon:hover {
+    background-color: #1DA1F2;
+}
+#youtubeicon {
+    background-image: url("../../assets/images/youtubeicon.png"); 
+    background-size: cover;
+}
+#youtubeicon:hover {
+    background-color: crimson;
+}
+#instagramicon {
+    background-image: url("../../assets/images/instagramicon.png"); 
+    background-size: cover;
+}
+#instagramicon:hover {
+    background-color: #833AB4
+}
+
+#linkedinicon {
+    background-image: url("../../assets/images/linkedinicon.png"); 
+    background-size: cover;
+}
+#linkedinicon:hover {
+    background-color: #0077b5;
+}
+#tiktokicon {
+    background-image: url("../../assets/images/tiktokicon.png"); 
+    background-size: cover;
+}
+#tiktokicon:hover {
+    background-color: #666;
+}
+
+.underline{
+    height: 4px;
+    width: 50px;
+    background-color: green;
+    margin-bottom: 20px;
+}
+
+.custom-sticky-top{
+    position: sticky !important;
+    top: 60px;
+}
+.post-body{
+    width: 100%;
+    overflow-x: scroll;
+}
+
+.sub-navbar-bg{
+    background-color: #434343;
+}
+/*Gallery Styles*/
+.close {
+    cursor: pointer;
+    position: absolute;
+    top: 40px;
+    right: 25px;
+    color: white;
+    font-size: 35px;
+    font-weight: bold;
+  }
+.close:hover {
+    color:  black;
+}
+.modal {
+  display: none; /* Hidden by default */
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Sit on top */
+  padding-top: 100px; /* Location of the box */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgb(0,0,0); /* Fallback color */
+  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+.modal-content {
+    display: block;
+    position: relative;
+    margin: auto;
+    max-height: 800px;
+    overflow: auto; /* Enable scroll if needed */
+    max-width: 60%; /* Could be more or less, depending on screen size */
+  }
+
+.photo-container {
+  width: 300px;
+  max-height: 200px;
+  overflow: hidden;
+  }
+  
+.photo-container img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.photo-container:hover img {
+  opacity: 0.9;
+  transition: opacity 0.3s ease-in-out;
+}
+@media only screen and (max-width: 640px) {
+
+    .sub-navbar-bg {
+        background-color: #434343 !important;
+        box-shadow: 0 .5rem 1rem rgba(0,0,0,.15)!important;
+        border-top: 1px solid #434343;
+    }
+    .sub-navbar-bg .nav-item .nav-link {
+        font-weight: 400;
+        color: white !important;
+        padding: 6px 8px !important;
+        border-bottom: 1px solid #434343;
+        font-size: 14px;
+    }
+    .navbar-toggler{
+        background-color: #434343 !important;
+    }
+
+    .navbar-brand img{
+        width: 130px;
+    }
+
+}
+

@@ -1,0 +1,132 @@
+<?php
+include('includes/config.php');
+
+$page_title = "Home | Scott Florence Jr.";
+$meta_description = "Home page description bloggin website";
+$meta_keywords = "php, html, css, laravel, codeigniter, react js";
+
+include('includes/header.php');
+include('includes/navbar.php');
+?>
+
+<div class="container">
+    <section class="py-5 ml-5 mr-0 px-5">
+        <div class="row justify-content-center text-center">
+            <h3 class="text-dark mb-4"><strong>Scott Florence Jr.</strong></h3>
+            <div class="underline"></div>
+        </div>
+        <div class="row justify-content-center">
+            <div class="col-9">
+                <div class="row justify-content-center">
+                    <img src="assets/images/portriat.png" class="d-md-block col-12 col-lg-4" style="height: 220px; width: 230px;"></img>
+                    <p class="col-12 col-lg-8">
+                    I am currently earning my teaching certificate from the <a class="link" href="https://www.iup.edu/education/" target="_blank">Indiana University of Pennsylvania College of Education and Communications </a> and intend to teach 
+                    business and information technology classes to high school students. I want to help
+                    students become valuable contributors to their communities and prepare them to pursue worthwhile and fulfilling career paths.
+                    Financial literacy and technology literacy are two critical components of a well rounded academic experience and
+                    are topics that I enjoy learning and teaching people about.
+ 
+                    </p>
+                    <p>
+                    <a class="link" href="https://clarion.edu/academics/degrees-programs/sois/computer/index.html" target="_blank">Clarion University of Pennsylvania's</a>
+                    Information Systems program gave me a solid understanding of the fundamentals of business
+                    and information technology. I chose to pursue my Masters in Business Administration from the 
+                    <a class="link" href="https://www.iup.edu/mba/" target="_blank">Eberly College of Business</a> to gain a broader 
+                    understanding of business concepts. Midway through the first semester 
+                    of my MBA program, I reflected on all of my prior work experience, my strengths, and my goals, and decided that going
+                    into the field of education would be the best way to utilize my skillset and work towards a cause that I believe in.
+                    Shortly thereafter, I enrolled in both the <a class="link" href="https://www.iup.edu/sahe/student-affairs-higher-education-ma/index.html" target="blank_">
+                    Student Affairs in Higher Education </a> Masters of Arts program and <a class="link" href="https://www.iup.edu/pse/grad/business-computer-information-technology-certification/" target="blank_">
+                    Business, Computers, and Information Technology </a> Masters of Education programs at IUP to build the skillset of an effective
+                    educator and community leader. 
+                    <br>
+                    <br>
+                    I served for two years as a residential director in my graduate assistantship with 
+                    <a class="link" href="https://www.iup.edu/housing/" target="blank_">IUP Housing</a>, where I supervised and
+                    trained resident assistants. I was also responsible for serving in on call rotations, which involved responding to violations of campus housing policy,
+                    medical emergencies, and other disruptions within the residence halls.
+                    <br>
+                    <br>
+                    <!-- Recently I did this stuff:
+                    <ul class="px-5">
+                        <li>
+                            text here
+                        </li>
+                        <li>
+                            text here
+                        </li>
+                        <li>
+                            text here
+                        </li>
+                        <li>
+                            text here
+                        </li>
+                    </ul>
+                    <br> -->
+                    I think that extra curricular involvement in sports, the band, theater, and other clubs can be just as important as participation in 
+                    the formal curriculum to students and the community. I grew up wanting to go to the NFL and played football competitively from 3rd grade through college. 
+                    Playing football taught me how to be a good teammate and about the value of preparation, accountability, and leadership.
+                    I believe that students can have a similar learning experience from participating in sports and other school sponsored activities. 
+                    </p>
+                    <br>
+                    <br>  
+
+                    <p class="pt-3">Outside of work and school, I enjoy: </p>
+                        <ul class="px-5">
+                            <li>
+                                
+                            </li>
+                            <li>
+                                
+                            <li>
+                                
+                            </li>
+                        </ul>
+                    
+                </div>
+            </div>
+        </div>
+    </section>
+
+<!--<div class="my-5 d-flex justify-content-center">
+        <div class="card-body text-center p-5">>
+            <button id="SOIBTN_ScottFlorenceJr" class="btn btn-success" style="padding: 10px 20px; border: 1px solid #c8c8c8; font: bold 14px Arial; cursor: pointer;" data-height="580" data-psz="00" data-so-page="ScottFlorenceJr" data-delay="1">Schedule a Meeting</button>
+            <script type="text/javascript" src="https://cdn.oncehub.com/mergedjs/so.js"></script>
+        </div>
+    </div> -->
+
+<!--<div class="py-5 bg-light-gray">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-9">
+                    <div class="px-5">
+                        <h3 class="text-dark">Spotlight</h3>
+                        <div class="underline"></div>
+                        <div class="row mb-5">
+                            <div class="col-md-4 text-center bg-warning">mid</div>
+                            <div class="col-md-4 text-center bg-danger">mid</div>
+                            <div class="col-md-4 text-center bg-primary">mid</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-md-3">
+                    <div class="card">
+                        <div class="card-header text-center">
+                            <h4>Connect</h4>
+                        </div>
+                        <div class="card-body text-center p-5">
+                            <button id="SOIBTN_ScottFlorenceJr" class="btn btn-success" style="padding: 10px 20px; border: 1px solid #c8c8c8; font: bold 14px Arial; cursor: pointer;" data-height="580" data-psz="00" data-so-page="ScottFlorenceJr" data-delay="1">Schedule a Meeting</button>
+                            <script type="text/javascript" src="https://cdn.oncehub.com/mergedjs/so.js"></script>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div> -->
+    
+</div>
+
+<?php
+include('includes/footer.php');
+?>
