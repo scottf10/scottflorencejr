@@ -10,7 +10,7 @@ include('includes/navbar.php');
 ?>
 
 <div class="container">
-    <section class="py-5 ml-5 mr-0 px-5">
+    <section class="py-5 ml-5 mr-0 px-0">
         <div class="row justify-content-center text-center">
             <h3 class="text-dark mb-4"><strong>Scott Florence Jr.</strong></h3>
             <div class="underline"></div>

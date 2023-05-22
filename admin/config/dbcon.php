@@ -1,9 +1,12 @@
 <?php
 
 $host = "localhost";
-$username = "u748224765_scottflo";
+$username = "u748224765_root";
+//$username = "root";
 $password = "z00P!123";
-$database = "u748224765_root";
+//$password = "";
+$database = "u748224765_scottflo";
+//$database = "scottflo";
 
 $con = mysqli_connect("$host","$username","$password","$database");
 
