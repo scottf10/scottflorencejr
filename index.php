@@ -9,14 +9,14 @@ include('includes/header.php');
 include('includes/navbar.php');
 ?>
 
-<div class="container">
+<div class="container px-0">
     <section class="py-5 ml-5 mr-0 px-0">
         <div class="row justify-content-center text-center">
             <h3 class="text-dark mb-4"><strong>Scott Florence Jr.</strong></h3>
             <div class="underline"></div>
         </div>
         <div class="row justify-content-center">
-            <div class="col-9">
+            <div class="col-9 mx-0 px-0">
                 <div class="row justify-content-center">
                     <img src="assets/images/portriat.png" class="d-md-block col-12 col-lg-4" style="height: 220px; width: 230px;"></img>
                     <p class="col-12 col-lg-8">
