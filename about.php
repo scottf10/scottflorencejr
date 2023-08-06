@@ -84,17 +84,17 @@ include('includes/navbar.php');
                   <ul>
                     <li>
                       Supervised/co-supervised, trained, and evaluated paraprofessionals (resident assistants and office workers).
-                      Conducted weekly individual and supervision meetings with 11 student staff members. Guided them
-                      in the development, planning, assessment & implementation of residence hall programming.
+                      Conducted weekly individual and group supervision meetings with 11 student staff members. Guided them
+                      in the development, planning, assessment & implementation of residence hall operations and programming.
                     </li>
                     <li>
-                      Participated in training committees to develop 4 weeks of Spring and Winter trainings for Resident Assistants. Facilliated sessions on how to provide critical feedback,
+                      Participated in training committees to develop 4 weeks of spring and winter trainings for Resident Assistants. Facilliated sessions on how to provide constructive feedback,
                       job-self-awareness, and intentional programming, among others. Hired Resident Assistants based on evaluations gathered during the facillitation of our 
                       Resident Assistant interview process. 
                     </li>
                     <li>
                       Developed and implemented outreach programs to reduce underage 
-                      drinking and high-risk alcohol use. Collaborated with several presenters to organize Alcohol-Free Friday Night Events that 
+                      drinking and high-risk alcohol use. Collaborated with several presenters and university partners to organize Alcohol-Free Friday Night Events that 
                       provided students with alcohol education and engaging alternatives to alcohol related weekend activities.
                     </li>
                   </ul>
