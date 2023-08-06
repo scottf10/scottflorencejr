@@ -42,7 +42,7 @@ include('includes/navbar.php');
                       
                     </li>
                     <li>
-                      Scheduled two months of daily activities and field trips. Coordinated with local businesses to plan Hayes' Summer Camp's
+                      Scheduled two months of daily activities and field trips. Coordinated with local businesses to plan Hayes Summer Camp's
                       annual scavenger hunt. 
                     </li>
                     <li>
