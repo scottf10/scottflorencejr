@@ -79,7 +79,7 @@ include('includes/navbar.php');
                             <li>
                                 <a class="link" href="https://open.spotify.com/playlist/0Z30iV34a061avNbEC8TOe?si=2ca625b754cb4614" target="blank">Listening to podcasts</a>
                             <li>
-                                <a class="link" href="https://www.youtube.com/watch?v=LvW5yxIdBuM" target="blank">Playing the piano</a>    
+                                <a>Playing the piano</a>   
                             </li>
                         </ul>
                     
