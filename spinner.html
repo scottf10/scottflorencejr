@@ -74,6 +74,22 @@
                 <p class="text-gray-500 text-sm">Paste names below, one per line.</p>
             </div>
 
+            <!-- Saved Groups Section (7 Slots) -->
+            <div class="bg-green-50/70 p-3.5 rounded-xl border border-green-200 space-y-2">
+                <div class="flex items-center justify-between gap-2">
+                    <div class="flex-1 min-w-0">
+                        <span id="currentGroupLabel" class="text-sm font-bold text-green-800 truncate block">Group 1</span>
+                        <input id="inlineRenameInput" type="text" class="hidden text-sm font-bold text-green-800 bg-white border border-green-400 rounded px-2 py-0.5 w-full focus:outline-none" />
+                    </div>
+                    <button id="renameGroupBtn" class="text-xs font-semibold text-green-700 hover:text-green-900 bg-white hover:bg-green-100 px-2 py-1 rounded-lg border border-green-300 shadow-sm transition-colors shrink-0">
+                        Rename
+                    </button>
+                </div>
+                <div id="groupTabs" class="grid grid-cols-7 gap-1.5">
+                    <!-- Tab buttons 1-7 dynamically rendered -->
+                </div>
+            </div>
+
             <!-- Names Input -->
             <div class="flex-1 min-h-[250px]">
                 <textarea 
@@ -182,6 +198,8 @@
         // --- State ---
         let names = [];
         let colors = [];
+        let activeGroupIndex = 0;
+        let groups = [];
         
         // --- DOM Elements ---
         const namesInput = document.getElementById('namesInput');
@@ -196,6 +214,10 @@
         const winnerText = document.getElementById('winnerText');
         const removeWinnerBtn = document.getElementById('removeWinnerBtn');
         const keepWinnerBtn = document.getElementById('keepWinnerBtn');
+        const groupTabs = document.getElementById('groupTabs');
+        const currentGroupLabel = document.getElementById('currentGroupLabel');
+        const inlineRenameInput = document.getElementById('inlineRenameInput');
+        const renameGroupBtn = document.getElementById('renameGroupBtn');
 
         // --- Wheel Variables ---
         let currentRotation = 0; // Current angle in radians
@@ -221,12 +243,109 @@
             '#1B9CFC', '#F8EFBA', '#58B19F', '#EAB543', '#82589F'
         ];
 
-        // --- Initialization ---
-        // Load default names if empty
-        if (!namesInput.value.trim()) {
-            namesInput.value = "Alice\nBob\nCharlie\nDavid\nEve\nFrank\nGrace";
+        // Default groups list (7 slots)
+        const defaultGroups = [
+            { name: "Group 1", names: ["Alice", "Bob", "Charlie", "David", "Eve", "Frank", "Grace"] },
+            { name: "Group 2", names: ["Alex", "Ben", "Chloe", "Daniel", "Emily", "Fiona", "Gabe"] },
+            { name: "Group 3", names: ["Aaron", "Bella", "Chris", "Daisy", "Ethan", "Faith", "George"] },
+            { name: "Group 4", names: ["Adam", "Brooke", "Caleb", "Diana", "Eli", "Freya", "Gavin"] },
+            { name: "Group 5", names: ["Andrew", "Beth", "Connor", "Delilah", "Evan", "Flora", "Grant"] },
+            { name: "Group 6", names: ["Austin", "Brianna", "Cody", "Daphne", "Eric", "Felicity", "Graham"] },
+            { name: "Group 7", names: ["Adrian", "Bianca", "Colton", "Destiny", "Ezekiel", "Francesca", "Gideon"] }
+        ];
+
+        function loadGroups() {
+            try {
+                const stored = localStorage.getItem('spin_wheel_groups_v2');
+                if (stored) {
+                    groups = JSON.parse(stored);
+                } else {
+                    groups = JSON.parse(JSON.stringify(defaultGroups));
+                }
+            } catch(e) {
+                groups = JSON.parse(JSON.stringify(defaultGroups));
+            }
         }
-        
+
+        function saveGroups() {
+            try {
+                localStorage.setItem('spin_wheel_groups_v2', JSON.stringify(groups));
+            } catch(e) {
+                console.error("Could not save groups to localStorage", e);
+            }
+        }
+
+        function renderGroupTabs() {
+            groupTabs.innerHTML = '';
+            groups.forEach((group, index) => {
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.className = `py-1.5 rounded-lg text-xs font-bold transition-all shadow-sm ${
+                    index === activeGroupIndex 
+                        ? 'bg-green-600 text-white ring-2 ring-green-400 ring-offset-1' 
+                        : 'bg-white text-gray-700 hover:bg-green-100 border border-green-200'
+                }`;
+                btn.textContent = index + 1;
+                btn.title = group.name;
+                btn.addEventListener('click', () => switchGroup(index));
+                groupTabs.appendChild(btn);
+            });
+            
+            currentGroupLabel.textContent = groups[activeGroupIndex].name;
+        }
+
+        function switchGroup(newIndex) {
+            if (isSpinning) return;
+            
+            saveCurrentInputToGroup();
+            activeGroupIndex = newIndex;
+            renderGroupTabs();
+            
+            namesInput.value = groups[activeGroupIndex].names.join('\n');
+            updateWheelFromInput();
+        }
+
+        function saveCurrentInputToGroup() {
+            const rawNames = namesInput.value.split('\n');
+            groups[activeGroupIndex].names = rawNames.map(n => n.trim()).filter(n => n.length > 0);
+            saveGroups();
+        }
+
+        // --- Inline Rename Handling ---
+        renameGroupBtn.addEventListener('click', () => {
+            currentGroupLabel.classList.add('hidden');
+            inlineRenameInput.classList.remove('hidden');
+            inlineRenameInput.value = groups[activeGroupIndex].name;
+            inlineRenameInput.focus();
+            inlineRenameInput.select();
+        });
+
+        function finishRename() {
+            const newName = inlineRenameInput.value.trim();
+            if (newName) {
+                groups[activeGroupIndex].name = newName;
+                saveGroups();
+                renderGroupTabs();
+            }
+            inlineRenameInput.classList.add('hidden');
+            currentGroupLabel.classList.remove('hidden');
+        }
+
+        inlineRenameInput.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') finishRename();
+            if (e.key === 'Escape') {
+                inlineRenameInput.classList.add('hidden');
+                currentGroupLabel.classList.remove('hidden');
+            }
+        });
+
+        inlineRenameInput.addEventListener('blur', finishRename);
+
+        // --- Initialization ---
+        loadGroups();
+        renderGroupTabs();
+        namesInput.value = groups[activeGroupIndex].names.join('\n');
+
         // --- Event Listeners ---
         spinTimeInput.addEventListener('input', (e) => {
             spinTimeDisplay.textContent = `${e.target.value}s`;
@@ -237,6 +356,8 @@
         resetBtn.addEventListener('click', () => {
             namesInput.value = '';
             names = [];
+            groups[activeGroupIndex].names = [];
+            saveGroups();
             drawWheel();
         });
 
@@ -246,8 +367,9 @@
             if (selectedIndex > -1) {
                 names.splice(selectedIndex, 1);
                 colors.splice(selectedIndex, 1);
-                // Update textarea to reflect removal
                 namesInput.value = names.join('\n');
+                groups[activeGroupIndex].names = [...names];
+                saveGroups();
                 drawWheel();
             }
             closeModal();
@@ -312,6 +434,10 @@
             // Clean up names (trim whitespace, remove empty lines)
             names = rawNames.map(n => n.trim()).filter(n => n.length > 0);
             
+            // Sync current list into active group state
+            groups[activeGroupIndex].names = [...names];
+            saveGroups();
+
             // Assign colors
             colors = [];
             let colorIndex = 0;
