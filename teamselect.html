@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Team Picker Machine</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.49/Tone.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+        }
+
+        /* Custom scrollbar for text area */
+        textarea::-webkit-scrollbar { width: 8px; }
+        textarea::-webkit-scrollbar-track { background: #f1f1f1; border-radius: 4px; }
+        textarea::-webkit-scrollbar-thumb { background: #bae6fd; border-radius: 4px; }
+        textarea::-webkit-scrollbar-thumb:hover { background: #7dd3fc; }
+
+        /* The Gumball styling */
+        .gumball {
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            color: white;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.4);
+            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.2s;
+            box-shadow: inset -10px -10px 20px rgba(0,0,0,0.2), 
+                        inset 5px 5px 10px rgba(255,255,255,0.4), 
+                        3px 5px 8px rgba(0,0,0,0.2);
+            user-select: none;
+            cursor: default;
+        }
+
+        /* Glass Bowl styling */
+        .glass-bowl {
+            background: rgba(255, 255, 255, 0.25);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 2px solid rgba(255, 255, 255, 0.5);
+            border-bottom: 8px solid rgba(255, 255, 255, 0.6);
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15),
+                        inset 0 -15px 25px rgba(255,255,255,0.5);
+            border-radius: 30px 30px 70px 70px; /* Bowl contour */
+            position: relative;
+            overflow-y: auto;
+            max-height: 280px;
+        }
+
+        .glass-bowl::-webkit-scrollbar { width: 6px; }
+        .glass-bowl::-webkit-scrollbar-track { background: transparent; }
+        .glass-bowl::-webkit-scrollbar-thumb { background: rgba(186, 230, 253, 0.6); border-radius: 4px; }
+
+        /* Team Cup styling */
+        .team-cup {
+            background: rgba(255, 255, 255, 0.7);
+            border: 2px solid rgba(255, 255, 255, 0.9);
+            border-top: 6px solid #cbd5e1;
+            border-radius: 10px 10px 30px 30px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05),
+                        inset 0 -10px 15px rgba(0,0,0,0.05);
+            transition: all 0.3s ease;
+        }
+        
+        .team-cup:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+        }
+
+        /* Shaking animation for gumballs */
+        @keyframes jitter {
+            0% { transform: translate(0, 0) rotate(0deg); }
+            20% { transform: translate(-3px, -3px) rotate(-5deg); }
+            40% { transform: translate(3px, -1px) rotate(5deg); }
+            60% { transform: translate(-3px, 3px) rotate(-5deg); }
+            80% { transform: translate(3px, 3px) rotate(5deg); }
+            100% { transform: translate(0, 0) rotate(0deg); }
+        }
+
+        .is-shaking .gumball {
+            animation: jitter 0.3s infinite;
+        }
+
+        /* Pop animation classes */
+        .scale-0 { transform: scale(0); opacity: 0; }
+        .scale-100 { transform: scale(1); opacity: 1; }
+
+        /* Button pulsing */
+        @keyframes pulse-soft {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.03); }
+        }
+        .btn-pulse { animation: pulse-soft 2s infinite; }
+        .btn-pulse:hover { animation: none; transform: translateY(-2px); }
+        
+    </style>
+</head>
+<body class="text-slate-800">
+
+    <div class="container mx-auto px-4 py-8 flex flex-col lg:flex-row gap-8 items-start justify-center min-h-screen">
+        
+        <!-- Left Column: Input and Controls -->
+        <div class="w-full lg:w-1/3 bg-white rounded-3xl shadow-xl p-6 flex flex-col gap-5 sticky top-8 border border-white">
+            <div class="text-center mb-2">
+                <h1 class="text-3xl font-extrabold text-sky-600 mb-2 tracking-tight">
+                    <i class="fa-solid fa-people-group mr-2"></i>Team Picker
+                </h1>
+                <p class="text-sm text-slate-500">Paste students, choose teams, and sort!</p>
+            </div>
+
+            <!-- Student Input -->
+            <div>
+                <label class="block text-sm font-semibold text-slate-700 mb-1">Students (One per line)</label>
+                <textarea id="names-input" class="w-full h-48 p-4 border-2 border-sky-100 rounded-2xl focus:border-sky-500 focus:ring-0 resize-none text-slate-700 text-base leading-relaxed shadow-inner bg-slate-50" placeholder="Alice&#10;Bob&#10;Charlie&#10;Diana&#10;Evan&#10;Fiona&#10;George&#10;Hannah"></textarea>
+            </div>
+
+            <!-- Team Count Input -->
+            <div>
+                <label class="block text-sm font-semibold text-slate-700 mb-1">Number of Teams</label>
+                <div class="flex items-center mt-1">
+                    <button id="minus-team" class="w-12 h-12 rounded-l-2xl bg-slate-100 hover:bg-slate-200 text-slate-600 font-bold text-xl flex items-center justify-center transition border-y border-l border-slate-200"><i class="fa-solid fa-minus"></i></button>
+                    <input type="number" id="team-count" value="2" min="2" max="20" class="w-full h-12 text-center text-xl font-bold border-y border-slate-200 focus:outline-none focus:ring-0 text-sky-700 bg-white" readonly>
+                    <button id="plus-team" class="w-12 h-12 rounded-r-2xl bg-slate-100 hover:bg-slate-200 text-slate-600 font-bold text-xl flex items-center justify-center transition border-y border-r border-slate-200"><i class="fa-solid fa-plus"></i></button>
+                </div>
+            </div>
+
+            <!-- Controls -->
+            <div class="flex flex-col gap-3 mt-2">
+                <button id="load-btn" class="w-full bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold py-3 px-4 rounded-xl transition duration-200 shadow-sm border border-slate-200 flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-rotate-right"></i> Reset Machine
+                </button>
+                <button id="sort-btn" class="w-full bg-gradient-to-r from-sky-500 to-indigo-600 hover:from-sky-600 hover:to-indigo-700 text-white font-bold py-4 px-6 rounded-2xl transition duration-300 shadow-lg shadow-sky-200 text-xl flex items-center justify-center gap-2 btn-pulse">
+                    <i class="fa-solid fa-wand-magic-sparkles"></i> SORT TEAMS!
+                </button>
+            </div>
+            
+            <!-- Audio toggle -->
+             <div class="mt-2 flex items-center justify-center gap-2 text-slate-500 text-sm">
+                <label for="sound-toggle" class="cursor-pointer flex items-center gap-2 hover:text-slate-700 transition">
+                    <input type="checkbox" id="sound-toggle" checked class="accent-sky-500 w-4 h-4 cursor-pointer">
+                    <i class="fa-solid fa-volume-high w-4"></i> Sound Effects
+                </label>
+            </div>
+        </div>
+
+        <!-- Right Column: Visualization -->
+        <div class="w-full lg:w-2/3 flex flex-col gap-6 items-center">
+            
+            <!-- The Main Bowl -->
+            <div class="w-full max-w-2xl">
+                <div class="flex items-center justify-between mb-2 px-4">
+                    <h2 class="text-xl font-bold text-slate-700">The Machine</h2>
+                    <span id="gumball-count" class="bg-sky-100 text-sky-800 text-xs font-bold px-3 py-1 rounded-full">0 Students</span>
+                </div>
+                <!-- Bowl Container -->
+                <div id="bowl-container" class="glass-bowl w-full h-64 sm:h-72 p-4 flex flex-wrap content-start justify-center items-center gap-1.5 z-10 relative">
+                    <!-- Gumballs will be injected here -->
+                    <div class="absolute inset-0 flex items-center justify-center text-slate-400 font-medium text-lg z-[-1]" id="empty-bowl-msg">
+                        Add students to start filling the machine
+                    </div>
+                </div>
+            </div>
+
+            <!-- The Sorting Area / Cups -->
+            <div class="w-full max-w-4xl mt-4">
+                <div id="cups-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                    <!-- Team cups will be generated here -->
+                </div>
+            </div>
+            
+        </div>
+    </div>
+
+    <script>
+        // DOM Elements
+        const namesInput = document.getElementById('names-input');
+        const teamCountInput = document.getElementById('team-count');
+        const minusTeamBtn = document.getElementById('minus-team');
+        const plusTeamBtn = document.getElementById('plus-team');
+        const loadBtn = document.getElementById('load-btn');
+        const sortBtn = document.getElementById('sort-btn');
+        const soundToggle = document.getElementById('sound-toggle');
+        
+        const bowlContainer = document.getElementById('bowl-container');
+        const cupsGrid = document.getElementById('cups-grid');
+        const gumballCount = document.getElementById('gumball-count');
+        const emptyBowlMsg = document.getElementById('empty-bowl-msg');
+
+        // State
+        let names = [];
+        let isSorting = false;
+        
+        // Audio Synthesizers (Tone.js)
+        let isAudioInitialized = false;
+        let shakeSynth;
+        let popSynth;
+        let winSynth;
+
+        // Gumball Color Palette
+        const colors = [
+            { bg: '#ef4444', text: '#ffffff' }, // Red
+            { bg: '#3b82f6', text: '#ffffff' }, // Blue
+            { bg: '#10b981', text: '#ffffff' }, // Green
+            { bg: '#f59e0b', text: '#ffffff' }, // Yellow (Amber)
+            { bg: '#8b5cf6', text: '#ffffff' }, // Purple
+            { bg: '#ec4899', text: '#ffffff' }, // Pink
+            { bg: '#06b6d4', text: '#ffffff' }, // Cyan
+            { bg: '#f97316', text: '#ffffff' }  // Orange
+        ];
+
+        async function initAudio() {
+            if (!isAudioInitialized && soundToggle.checked) {
+                await Tone.start();
+                
+                // Synth for the shaking machine rumble
+                shakeSynth = new Tone.NoiseSynth({
+                    noise: { type: 'brown' },
+                    envelope: { attack: 0.1, decay: 0.1, sustain: 1, release: 0.5 }
+                }).toDestination();
+                shakeSynth.volume.value = -15;
+
+                // Synth for the gumball 'pop' into a cup
+                popSynth = new Tone.MembraneSynth({
+                    pitchDecay: 0.05,
+                    octaves: 4,
+                    oscillator: { type: 'sine' },
+                    envelope: { attack: 0.001, decay: 0.2, sustain: 0, release: 0.1 }
+                }).toDestination();
+                popSynth.volume.value = -10;
+
+                // Synth for completion
+                winSynth = new Tone.PolySynth(Tone.Synth, {
+                    oscillator: { type: 'triangle' },
+                    envelope: { attack: 0.05, decay: 0.1, sustain: 0.3, release: 1 }
+                }).toDestination();
+                winSynth.volume.value = -10;
+
+                isAudioInitialized = true;
+            }
+        }
+
+        // Fisher-Yates shuffle
+        function shuffleArray(array) {
+            let currentIndex = array.length, randomIndex;
+            while (currentIndex != 0) {
+                randomIndex = Math.floor(Math.random() * currentIndex);
+                currentIndex--;
+                [array[currentIndex], array[randomIndex]] = [array[randomIndex], array[currentIndex]];
+            }
+            return array;
+        }
+
+        // Lighten a hex color for the radial gradient shine effect
+        function lightenHex(hex, percent) {
+            let num = parseInt(hex.replace("#",""), 16),
+            amt = Math.round(2.55 * percent),
+            R = (num >> 16) + amt,
+            G = (num >> 8 & 0x00FF) + amt,
+            B = (num & 0x0000FF) + amt;
+            return "#" + (0x1000000 + (R<255?R<1?0:R:255)*0x10000 + (G<255?G<1?0:G:255)*0x100 + (B<255?B<1?0:B:255)).toString(16).slice(1);
+        }
+
+        // Create a single gumball DOM element
+        function createGumballElement(name, index, totalCount = 0) {
+            const colorObj = colors[index % colors.length];
+            const div = document.createElement('div');
+            
+            // Dynamic sizing based on student count so gumballs arrange cleanly in rows
+            let sizeClasses = 'w-14 h-14 sm:w-16 sm:h-16 text-xs sm:text-sm p-1';
+            if (totalCount > 30) {
+                sizeClasses = 'w-9 h-9 sm:w-10 sm:h-10 text-[9px] sm:text-[10px] p-0.5';
+            } else if (totalCount > 18) {
+                sizeClasses = 'w-10 h-10 sm:w-11 sm:h-11 text-[10px] sm:text-xs p-1';
+            } else if (totalCount > 10) {
+                sizeClasses = 'w-12 h-12 sm:w-13 sm:h-13 text-xs p-1';
+            }
+
+            // Base classes for responsive sizing
+            div.className = `gumball ${sizeClasses} flex-shrink-0 m-0.5 leading-tight text-center break-all scale-100`;
+            
+            // Styling
+            div.style.background = `radial-gradient(circle at 30% 30%, ${lightenHex(colorObj.bg, 40)}, ${colorObj.bg})`;
+            div.style.color = colorObj.text;
+            
+            // Randomize slight initial rotation for a jumbled look in the bowl
+            const randomRot = Math.floor(Math.random() * 40) - 20;
+            div.style.transform = `rotate(${randomRot}deg)`;
+            
+            // Assign random animation delay so they don't shake in unison
+            div.style.animationDelay = `${Math.random() * 0.3}s`;
+            
+            // Content
+            div.innerText = name;
+            
+            return div;
+        }
+
+        // Load names from textarea into the bowl
+        function loadMachine() {
+            if(isSorting) return;
+            
+            // Parse and clean names
+            const inputText = namesInput.value;
+            names = inputText.split('\n')
+                .map(name => name.trim())
+                .filter(name => name.length > 0);
+
+            // Update UI count
+            gumballCount.innerText = `${names.length} Student${names.length !== 1 ? 's' : ''}`;
+            
+            // Clear current state
+            bowlContainer.innerHTML = '';
+            cupsGrid.innerHTML = '';
+            
+            if (names.length === 0) {
+                bowlContainer.appendChild(emptyBowlMsg);
+                emptyBowlMsg.style.display = 'flex';
+                return;
+            }
+            
+            emptyBowlMsg.style.display = 'none';
+
+            // Scramble names so colors apply randomly
+            const scrambled = shuffleArray([...names]);
+
+            // Add gumballs to bowl
+            scrambled.forEach((name, index) => {
+                const gumball = createGumballElement(name, index, scrambled.length);
+                bowlContainer.appendChild(gumball);
+            });
+            
+            // Adjust max teams based on number of students
+            const teamInput = document.getElementById('team-count');
+            if (names.length > 0 && parseInt(teamInput.value) > names.length) {
+                teamInput.value = names.length;
+            }
+        }
+
+        // Generate the Team Cups in the grid
+        function generateCups(numTeams) {
+            cupsGrid.innerHTML = '';
+            const cups = [];
+            
+            // Dynamically adjust grid columns based on team count
+            cupsGrid.className = 'grid gap-6 w-full';
+            if (numTeams === 2) cupsGrid.classList.add('grid-cols-1', 'sm:grid-cols-2', 'max-w-3xl', 'mx-auto');
+            else if (numTeams === 3) cupsGrid.classList.add('grid-cols-1', 'sm:grid-cols-3');
+            else if (numTeams === 4) cupsGrid.classList.add('grid-cols-1', 'sm:grid-cols-2', 'lg:grid-cols-4');
+            else if (numTeams > 4) cupsGrid.classList.add('grid-cols-1', 'sm:grid-cols-2', 'md:grid-cols-3', 'lg:grid-cols-4');
+
+            for (let i = 0; i < numTeams; i++) {
+                const cupWrap = document.createElement('div');
+                cupWrap.className = 'team-cup min-h-[150px] max-h-[320px] flex flex-col overflow-hidden';
+                
+                const header = document.label ? document.createElement('div') : document.createElement('div');
+                header.className = 'bg-slate-100 py-2 text-center border-b border-slate-200 font-bold text-slate-600 uppercase tracking-wider text-sm';
+                header.innerText = `Team ${i + 1}`;
+                
+                const content = document.createElement('div');
+                content.className = 'flex-grow p-3 flex flex-wrap content-start justify-center gap-1.5 overflow-y-auto';
+                // Store reference to the content area
+                cups.push(content); 
+                
+                cupWrap.appendChild(header);
+                cupWrap.appendChild(content);
+                cupsGrid.appendChild(cupWrap);
+            }
+            return cups;
+        }
+
+        async function sortTeams() {
+            // Validation
+            if (isSorting || names.length === 0) return;
+            const numTeams = parseInt(teamCountInput.value);
+            if (numTeams > names.length) {
+                alert("You can't have more teams than students!");
+                return;
+            }
+
+            // Prep state
+            isSorting = true;
+            sortBtn.disabled = true;
+            sortBtn.classList.remove('btn-pulse');
+            sortBtn.classList.add('opacity-75', 'cursor-not-allowed');
+            
+            // Ensure audio is ready
+            await initAudio();
+            
+            // 1. Reset machine to visually put all gumballs back in the bowl
+            loadMachine();
+            const allGumballs = Array.from(bowlContainer.querySelectorAll('.gumball'));
+            
+            // 2. Start the shaking animation and sound
+            bowlContainer.classList.add('is-shaking');
+            if (soundToggle.checked && shakeSynth) {
+                shakeSynth.triggerAttack();
+            }
+
+            // Wait for dramatic effect (shaking)
+            await new Promise(r => setTimeout(r, 2000));
+
+            // Stop shaking
+            bowlContainer.classList.remove('is-shaking');
+            if (soundToggle.checked && shakeSynth) {
+                shakeSynth.triggerRelease();
+            }
+
+            // 3. Generate empty team cups
+            const cupElements = generateCups(numTeams);
+            
+            // 4. Sort visually one by one
+            let currentTeamIndex = 0;
+            // Shuffle the DOM nodes array to pick randomly from the bowl
+            shuffleArray(allGumballs);
+
+            for (let i = 0; i < allGumballs.length; i++) {
+                const gumball = allGumballs[i];
+                const targetCup = cupElements[currentTeamIndex];
+
+                // a. Shrink out of bowl
+                gumball.classList.remove('scale-100');
+                gumball.classList.add('scale-0');
+                
+                await new Promise(r => setTimeout(r, 150)); // Wait for shrink
+
+                // b. Move DOM node to cup
+                targetCup.appendChild(gumball);
+                
+                // Play pop sound
+                if (soundToggle.checked && popSynth) {
+                    // Pitch shifts up slightly as we progress
+                    const pitch = 200 + (Math.random() * 100);
+                    popSynth.triggerAttackRelease(pitch, "32n");
+                }
+
+                // c. Grow into cup
+                // Force reflow to ensure the transition happens from 0 to 1 in new container
+                void gumball.offsetWidth; 
+                gumball.classList.remove('scale-0');
+                gumball.classList.add('scale-100');
+                
+                // Update counters / teams
+                currentTeamIndex = (currentTeamIndex + 1) % numTeams;
+                gumballCount.innerText = `${allGumballs.length - (i+1)} in Machine`;
+
+                // Pacing interval between pops (speed up slightly if many students)
+                const delay = allGumballs.length > 20 ? 100 : 250;
+                await new Promise(r => setTimeout(r, delay));
+            }
+
+            // 5. Finished Sequence
+            if (soundToggle.checked && winSynth) {
+                const now = Tone.now();
+                winSynth.triggerAttackRelease("C4", "8n", now);
+                winSynth.triggerAttackRelease("E4", "8n", now + 0.15);
+                winSynth.triggerAttackRelease("G4", "8n", now + 0.3);
+                winSynth.triggerAttackRelease("C5", "2n", now + 0.45);
+            }
+            
+            fireConfetti();
+
+            // Reset state
+            isSorting = false;
+            sortBtn.disabled = false;
+            sortBtn.classList.add('btn-pulse');
+            sortBtn.classList.remove('opacity-75', 'cursor-not-allowed');
+        }
+
+        // Celebrate!
+        function fireConfetti() {
+            const duration = 2500;
+            const end = Date.now() + duration;
+            
+            // Extract hex colors from our palette for confetti
+            const confettiColors = colors.map(c => c.bg);
+
+            (function frame() {
+                confetti({
+                    particleCount: 5,
+                    angle: 60,
+                    spread: 55,
+                    origin: { x: 0 },
+                    colors: confettiColors
+                });
+                confetti({
+                    particleCount: 5,
+                    angle: 120,
+                    spread: 55,
+                    origin: { x: 1 },
+                    colors: confettiColors
+                });
+
+                if (Date.now() < end) {
+                    requestAnimationFrame(frame);
+                }
+            }());
+        }
+
+        
+        // Handle Team Count increment/decrement
+        minusTeamBtn.addEventListener('click', () => {
+            let val = parseInt(teamCountInput.value);
+            if (val > 2) teamCountInput.value = val - 1;
+        });
+
+        plusTeamBtn.addEventListener('click', () => {
+            let val = parseInt(teamCountInput.value);
+            const max = names.length > 0 ? names.length : 20;
+            if (val < max) teamCountInput.value = val + 1;
+        });
+
+        // Ensure team count doesn't exceed students when manually typed (if input wasn't readonly)
+        teamCountInput.addEventListener('change', () => {
+            let val = parseInt(teamCountInput.value);
+            const max = names.length > 0 ? names.length : 20;
+            if (val < 2) teamCountInput.value = 2;
+            if (val > max) teamCountInput.value = max;
+        });
+
+        // Main buttons
+        loadBtn.addEventListener('click', loadMachine);
+        sortBtn.addEventListener('click', sortTeams);
+        namesInput.addEventListener('input', () => {
+             // Only auto-load if we aren't currently sorting
+            if(!isSorting) loadMachine();
+        });
+
+        // Initialize Audio on any interaction if sound is on
+        document.body.addEventListener('click', () => {
+            if(!isAudioInitialized && soundToggle.checked) initAudio();
+        }, { once: true });
+
+        soundToggle.addEventListener('change', () => {
+            if (soundToggle.checked && !isAudioInitialized) {
+                initAudio();
+            }
+        });
+
+        // Initial setup on load
+        window.onload = () => {
+            loadMachine();
+        };
+
+    </script>
+</body>
+</html>
